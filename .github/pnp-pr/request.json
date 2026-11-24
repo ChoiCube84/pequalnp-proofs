@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4241-1",
-  "head_sha": "07df660c6a88d7843ad677612176594f6e03298b",
-  "summary": "Two disjoint incident pairs force both final AND operands to be gate outputs. The prefix through the later operand preserves all tested rows."
+  "branch": "R-meta-3951-1",
+  "head_sha": "f7efb28c009d456f4479a74bfc5a3bb38f453fae",
+  "summary": "Proves the reduction to a gate-stability lemma and a simplified cofactor obstruction. Lean verifies the stability lemma separately: toggling an unread input preserves the selected gate value."
 }
