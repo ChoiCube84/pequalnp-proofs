@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-2619-1",
-  "head_sha": "d1dab3c875051afe3e5dce551c8908c2766b587e",
-  "summary": "Reduces the final-AND circuit to a 58-gate circuit with point 2 removed and a six-gate extension that restores its four incidences."
+  "branch": "R-meta-4011-1",
+  "head_sha": "82b42f61af02570ec43b3eecf99a895a85e25e69",
+  "summary": "Separates checked circuit normalization from the four-gate deletion bound for circuits with distinct earlier operands and output at the last gate."
 }
