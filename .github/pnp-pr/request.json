@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4318-1",
-  "head_sha": "696ef6eb34a9d2f300543fb8f3c33dbe0b57aa73",
-  "summary": "At the first accepting AND on each edge, the two earlier operands have disjoint OR supports reaching opposite endpoints. The edge-and-cover count is the remaining premise."
+  "branch": "R-meta-5066-1",
+  "head_sha": "35b55989f82f0b598015aba2e8dea8b99d30e25c",
+  "summary": "Relabels the line inputs so that the perfect matching becomes diagonal, preserving circuit size and evaluation. The diagonal lower bound remains open."
 }
