@@ -20,7 +20,10 @@ case "$operation" in
     jq -e 'keys == ["operation"]' "$request" >/dev/null
     ;;
   create)
-    jq -e 'keys == ["branch", "head_sha", "operation"]' "$request" >/dev/null
+    jq -e '(keys - ["summary"]) == ["branch", "head_sha", "operation"] and
+      (if has("summary") then (.summary | type == "string" and length > 0 and length <= 240
+        and (test("[\r\n]") | not)) else true end)' "$request" >/dev/null
+    summary=$(jq -r '.summary // ""' "$request")
     branch=$(jq -er '.branch | strings' "$request")
     head_sha=$(jq -er '.head_sha | strings' "$request")
     [[ "$head_sha" =~ ^[0-9a-f]{40}$ ]] || fail 'Invalid proof commit SHA.'
@@ -111,7 +114,11 @@ PY
   exit 0
 fi
 
-body=$(printf '**Gap id**: `%s`\n**File**: `%s`\n**Agent used**: Codex\n\n%s' "$gap" "$proof_path" "$linkedin")
+body=$(printf '**Gap id**: `%s`\n**File**: `%s`\n**Agent used**: Codex' "$gap" "$proof_path")
+if [[ -n "$summary" ]]; then
+  body=$(printf '%s\n\n%s' "$body" "$summary")
+fi
+body=$(printf '%s\n\n%s' "$body" "$linkedin")
 route="repos/$upstream/pulls"
 find_existing() {
   gh api --method GET "$route" -f state=all -f "head=$owner:$branch"

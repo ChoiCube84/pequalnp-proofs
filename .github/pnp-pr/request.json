@@ -1,1 +1,6 @@
-{"operation":"edit-description"}
+{
+  "operation": "create",
+  "branch": "R-meta-4453-1",
+  "head_sha": "c893ba12f8c9656256ef034dea2943234472ed74",
+  "summary": "Splits the count into pairs read once on at least one side and pairs reread on both sides, with respective bounds of 20 and 24 times the circuit size."
+}
