@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-5022-1",
-  "head_sha": "3a3b9e40002cc93821e68c85fcee5050c760c1d2",
-  "summary": "Rules out identical other operands and a direct wire between the two OR readers in a least circuit, leaving the cubic-graph count under these constraints."
+  "branch": "R-meta-5124-1",
+  "head_sha": "78fb398c58460f670d91b3c44794d7842042f93f",
+  "summary": "Splits the edge count by singleton activation of junk ANDs. In the remaining class, the first true junk AND has OR supports reaching opposite endpoints."
 }
