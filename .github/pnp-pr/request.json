@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-3225-1",
-  "head_sha": "979ae195449ede3e83bee3fc3cfc5677db50d151",
-  "summary": "On boundary rows where the extra OR input stays true, a change of output requires the unique OR reader of wire 6 to be false on the initial row."
+  "branch": "R-meta-4241-1",
+  "head_sha": "07df660c6a88d7843ad677612176594f6e03298b",
+  "summary": "Two disjoint incident pairs force both final AND operands to be gate outputs. The prefix through the later operand preserves all tested rows."
 }
