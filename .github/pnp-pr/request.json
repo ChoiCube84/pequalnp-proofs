@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4281-1",
-  "head_sha": "cb3a1a62c14c25dbbc6bd33d3ebd3ecda58f65e1",
-  "summary": "Traces each lost edge to a live wire at the disabled gate. This pays the charge when its live-edge count is at most the number of freed gates."
+  "branch": "R-meta-5377-1",
+  "head_sha": "823b818e1d536d6f12bd46abea2b4fc9b3302723",
+  "summary": "In either permitted ownership shape, a nonstar gate owns an induced path on four vertices. The remaining exchange only needs to handle a gate with this obstruction."
 }
