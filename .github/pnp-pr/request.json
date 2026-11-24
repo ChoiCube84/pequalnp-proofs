@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-5124-1",
-  "head_sha": "78fb398c58460f670d91b3c44794d7842042f93f",
-  "summary": "Splits the edge count by singleton activation of junk ANDs. In the remaining class, the first true junk AND has OR supports reaching opposite endpoints."
+  "branch": "R-meta-4318-1",
+  "head_sha": "696ef6eb34a9d2f300543fb8f3c33dbe0b57aa73",
+  "summary": "At the first accepting AND on each edge, the two earlier operands have disjoint OR supports reaching opposite endpoints. The edge-and-cover count is the remaining premise."
 }
