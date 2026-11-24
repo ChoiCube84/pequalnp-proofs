@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-3951-1",
-  "head_sha": "f7efb28c009d456f4479a74bfc5a3bb38f453fae",
-  "summary": "Proves the reduction to a gate-stability lemma and a simplified cofactor obstruction. Lean verifies the stability lemma separately: toggling an unread input preserves the selected gate value."
+  "branch": "R-meta-4928-1",
+  "head_sha": "d10696834c054d2746ae1241b821e381f07c206c",
+  "summary": "Uses the affine symmetries of the Fano plane to reduce all 21 incident pairs to (0, 0). The general circuit relabeling lemma was proved separately in Lean. The canonical-pair case remains open."
 }
