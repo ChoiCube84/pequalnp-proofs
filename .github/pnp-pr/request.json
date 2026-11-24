@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-5324-1",
-  "head_sha": "d96711076772771196920525a2412e1908cb81f2",
-  "summary": "Bounds covered endpoints by the fan-in-two gate budget plus twice the number of chosen wire pairs. Lean checks the support lemma separately. The remaining case has more covered and matching edges in total than endpoints."
+  "branch": "R-meta-4221-1",
+  "head_sha": "170391ce9029ee6227b96a20f5e8b76112c94be0",
+  "summary": "Proves that the desk tests give exact incidence on all rows and force the selected wires to be internal. Lean separately checks test completeness. The remaining premise is the 63-gate bound for these exact circuits."
 }
