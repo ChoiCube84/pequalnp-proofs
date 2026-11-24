@@ -1,3 +1,5 @@
 {
-  "operation": "preflight"
+  "operation": "create",
+  "branch": "R-meta-4815-1",
+  "head_sha": "835d3b4620fa7c808117447c0939761ec98eaa29"
 }

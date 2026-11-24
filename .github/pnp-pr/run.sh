@@ -84,6 +84,7 @@ PY
   exit 0
 fi
 
+body=$(printf '**Gap id**: `%s`\n**File**: `%s`\n**Agent used**: Codex\n\n%s' "$gap" "$proof_path" "$linkedin")
 route="repos/$upstream/pulls"
 find_existing() {
   gh api --method GET "$route" -f state=all -f "head=$owner:$branch"
@@ -91,8 +92,9 @@ find_existing() {
 
 find_existing > "$temp/existing.json"
 if jq -e 'length != 0' "$temp/existing.json" >/dev/null; then
-  jq -er --arg sha "$head_sha" --arg owner "$owner" --arg body "$linkedin" \
-    '.[] | select(.head.sha == $sha and .user.login == $owner and .body == $body) | .html_url' \
+  jq -er --arg sha "$head_sha" --arg owner "$owner" --arg linkedin "$linkedin" \
+    '.[] | select(.head.sha == $sha and .user.login == $owner
+      and (.body | gsub("\r";"") | split("\n") | index($linkedin) != null)) | .html_url' \
     "$temp/existing.json" || fail 'An existing PR uses this branch. Review it before retrying.'
   exit 0
 fi
@@ -113,8 +115,8 @@ gh api "repos/$upstream/compare/main...$owner:$branch" |
     and .files[0].status == "added" and .files[0].filename == $path
   ' >/dev/null || fail 'The submitted branch must match the checked commit and add one proof file.'
 
-jq -n --arg head "$owner:$branch" --arg title "$branch" --arg body "$linkedin" \
+jq -n --arg head "$owner:$branch" --arg title "$branch" --arg body "$body" \
   '{head:$head,base:"main",title:$title,body:$body}' > "$temp/pull.json"
 gh api --method POST "$route" --input "$temp/pull.json" |
-  jq -er --arg sha "$head_sha" --arg owner "$owner" --arg body "$linkedin" \
+  jq -er --arg sha "$head_sha" --arg owner "$owner" --arg body "$body" \
     'select(.head.sha == $sha and .user.login == $owner and .body == $body) | .html_url'
