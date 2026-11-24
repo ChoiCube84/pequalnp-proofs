@@ -1,0 +1,59 @@
+name: Codex PR CLI
+
+on:
+  push:
+    branches: [codex-pr-cli]
+    paths:
+      - .github/workflows/codex-pr-cli.yml
+      - .github/pnp-pr/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codex-pr-cli
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    if: github.repository == 'ChoiCube84/pequalnp-proofs' && github.ref == 'refs/heads/codex-pr-cli'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      operation: ${{ steps.request.outputs.operation }}
+    steps:
+      - name: Run the preflight and validate the request
+        id: request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP"
+          for file in request.json run.sh; do
+            gh api "repos/$GITHUB_REPOSITORY/contents/.github/pnp-pr/$file?ref=$GITHUB_SHA" \
+              --jq .content | base64 --decode > "$file"
+          done
+          bash run.sh validate request.json
+
+  submit:
+    needs: validate
+    if: needs.validate.outputs.operation == 'create' || needs.validate.outputs.operation == 'edit-linkedin'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: codex-prs
+    steps:
+      - name: Read the automation files at the triggering commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP"
+          for file in request.json run.sh; do
+            gh api "repos/$GITHUB_REPOSITORY/contents/.github/pnp-pr/$file?ref=$GITHUB_SHA" \
+              --jq .content | base64 --decode > "$file"
+          done
+      - name: Apply the requested PR operation
+        env:
+          GH_TOKEN: ${{ secrets.PNP_GITHUB_TOKEN }}
+        run: |
+          cd "$RUNNER_TEMP"
+          bash run.sh submit request.json
