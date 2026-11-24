@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4930-1",
-  "head_sha": "6b9436abf7de8fec2689f06c5271c4dc9ee1ef94",
-  "summary": "Splits the 26-gate witness into a 14-gate circuit for a fixed 12-edge subfunction and a 12-gate extension. The extension has an explicit locally checked witness."
+  "branch": "R-meta-2619-1",
+  "head_sha": "d1dab3c875051afe3e5dce551c8908c2766b587e",
+  "summary": "Reduces the final-AND circuit to a 58-gate circuit with point 2 removed and a six-gate extension that restores its four incidences."
 }
