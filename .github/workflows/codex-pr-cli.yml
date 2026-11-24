@@ -37,7 +37,7 @@ jobs:
 
   submit:
     needs: validate
-    if: needs.validate.outputs.operation == 'create' || needs.validate.outputs.operation == 'edit-linkedin'
+    if: needs.validate.outputs.operation == 'create' || needs.validate.outputs.operation == 'edit-linkedin' || needs.validate.outputs.operation == 'edit-description'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     environment: codex-prs

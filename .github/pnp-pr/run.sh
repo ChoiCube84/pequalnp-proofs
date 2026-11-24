@@ -16,7 +16,7 @@ fail() {
 
 operation=$(jq -er '.operation | strings' "$request")
 case "$operation" in
-  preflight|edit-linkedin)
+  preflight|edit-linkedin|edit-description)
     jq -e 'keys == ["operation"]' "$request" >/dev/null
     ;;
   create)
@@ -53,25 +53,52 @@ fi
 temp=$(mktemp -d)
 trap 'rm -rf "$temp"' EXIT
 
-if [[ "$operation" == edit-linkedin ]]; then
+if [[ "$operation" == edit-linkedin || "$operation" == edit-description ]]; then
   route="repos/$upstream/pulls/9071"
   gh api "$route" > "$temp/before.json"
-  python3 - "$temp" "$owner" "$linkedin" <<'PY'
+  if [[ "$operation" == edit-description ]]; then
+    gh api "$route/files" > "$temp/files.json"
+  fi
+  python3 - "$temp" "$owner" "$linkedin" "$operation" <<'PY'
 import json
 from pathlib import Path
 import re
 import sys
 
-directory, owner, linkedin = Path(sys.argv[1]), sys.argv[2], sys.argv[3]
+directory, owner, linkedin, operation = Path(sys.argv[1]), *sys.argv[2:]
 pull = json.loads((directory / "before.json").read_text())
 if pull["user"]["login"] != owner or pull["number"] != 9071:
     raise SystemExit("Unexpected PR author or number.")
 body = pull["body"]
-updated, count = re.subn(
-    r"^\*\*LinkedIn profile\*\*[^\r\n]*", lambda _: linkedin, body, flags=re.M
-)
-if count != 1:
-    raise SystemExit("Expected exactly one LinkedIn line.")
+if operation == "edit-description":
+    proof_file = "lean/PEqualNP/Outside/R_meta_4227_371.lean"
+    files = json.loads((directory / "files.json").read_text())
+    if (
+        pull["head"]["sha"] != "2d0a94390f1c771bca0afc449fe077cfb54f334c"
+        or pull["head"]["ref"] != "R-meta-4227-371"
+        or pull["head"]["repo"]["full_name"] != f"{owner}/pequalnp-proofs"
+        or pull["changed_files"] != 1
+        or [(file["filename"], file["status"]) for file in files] != [(proof_file, "added")]
+    ):
+        raise SystemExit("The PR no longer matches the reviewed reduction.")
+    updated = "\n".join([
+        "**Gap id**: `L-meta-4227`",
+        f"**The one file this adds**: `{proof_file}`",
+        "**Agent used**: Codex",
+        "",
+        "This reduction separates the 118-gate circuit claim into two obligations:",
+        "monotonicity of fan-in-two AND/OR circuit evaluation and a circuit certificate",
+        "that passes the positive incidence-pair tests and the closed negative-input tests.",
+        "It uses monotonicity to extend those checks to all 42-bit inputs.",
+        "",
+        linkedin,
+    ])
+else:
+    updated, count = re.subn(
+        r"^\*\*LinkedIn profile\*\*[^\r\n]*", lambda _: linkedin, body, flags=re.M
+    )
+    if count != 1:
+        raise SystemExit("Expected exactly one LinkedIn line.")
 (directory / "patch.json").write_text(json.dumps({"body": updated}))
 if updated != body:
     (directory / "changed").touch()
