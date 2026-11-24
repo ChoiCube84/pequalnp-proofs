@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4928-1",
-  "head_sha": "d10696834c054d2746ae1241b821e381f07c206c",
-  "summary": "Uses the affine symmetries of the Fano plane to reduce all 21 incident pairs to (0, 0). The general circuit relabeling lemma was proved separately in Lean. The canonical-pair case remains open."
+  "branch": "R-meta-5324-1",
+  "head_sha": "d96711076772771196920525a2412e1908cb81f2",
+  "summary": "Bounds covered endpoints by the fan-in-two gate budget plus twice the number of chosen wire pairs. Lean checks the support lemma separately. The remaining case has more covered and matching edges in total than endpoints."
 }
