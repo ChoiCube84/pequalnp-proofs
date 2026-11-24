@@ -20,10 +20,12 @@ case "$operation" in
     jq -e 'keys == ["operation"]' "$request" >/dev/null
     ;;
   create)
-    jq -e '(keys - ["summary"]) == ["branch", "head_sha", "operation"] and
+    jq -e '(keys - ["summary", "local_types"]) == ["branch", "head_sha", "operation"] and
       (if has("summary") then (.summary | type == "string" and length > 0 and length <= 240
-        and (test("[\r\n]") | not)) else true end)' "$request" >/dev/null
+        and (test("[\r\n]") | not)) else true end) and
+      (if has("local_types") then (.local_types | type == "boolean") else true end)' "$request" >/dev/null
     summary=$(jq -r '.summary // ""' "$request")
+    local_types=$(jq -r '.local_types // false' "$request")
     branch=$(jq -er '.branch | strings' "$request")
     head_sha=$(jq -er '.head_sha | strings' "$request")
     [[ "$head_sha" =~ ^[0-9a-f]{40}$ ]] || fail 'Invalid proof commit SHA.'
@@ -119,6 +121,9 @@ if [[ -n "$summary" ]]; then
   body=$(printf '%s\n\n%s' "$body" "$summary")
 fi
 body=$(printf '%s\n\n%s' "$body" "$linkedin")
+if [[ "$local_types" == true ]]; then
+  body=$(printf 'This file declares auxiliary data types and proof structures.\n\n%s' "$body")
+fi
 route="repos/$upstream/pulls"
 find_existing() {
   gh api --method GET "$route" -f state=all -f "head=$owner:$branch"

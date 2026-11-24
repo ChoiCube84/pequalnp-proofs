@@ -1,6 +1,7 @@
 {
   "operation": "create",
-  "branch": "R-meta-4453-1",
-  "head_sha": "c893ba12f8c9656256ef034dea2943234472ed74",
-  "summary": "Splits the count into pairs read once on at least one side and pairs reread on both sides, with respective bounds of 20 and 24 times the circuit size."
+  "branch": "L-meta-5170",
+  "head_sha": "789cdaf27e6eba9e1f78f3048485199a9a38de8f",
+  "summary": "Restores the two prefix gates and applies the checked 13-binary-gate lower bound from L-meta-3400, leaving at most one additional NOT gate.",
+  "local_types": true
 }
