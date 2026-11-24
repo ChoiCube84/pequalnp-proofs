@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-5066-1",
-  "head_sha": "35b55989f82f0b598015aba2e8dea8b99d30e25c",
-  "summary": "Relabels the line inputs so that the perfect matching becomes diagonal, preserving circuit size and evaluation. The diagonal lower bound remains open."
+  "branch": "R-meta-4281-1",
+  "head_sha": "cb3a1a62c14c25dbbc6bd33d3ebd3ecda58f65e1",
+  "summary": "Traces each lost edge to a live wire at the disabled gate. This pays the charge when its live-edge count is at most the number of freed gates."
 }
