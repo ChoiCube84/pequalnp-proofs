@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4011-1",
-  "head_sha": "82b42f61af02570ec43b3eecf99a895a85e25e69",
-  "summary": "Separates checked circuit normalization from the four-gate deletion bound for circuits with distinct earlier operands and output at the last gate."
+  "branch": "R-meta-5022-1",
+  "head_sha": "3a3b9e40002cc93821e68c85fcee5050c760c1d2",
+  "summary": "Rules out identical other operands and a direct wire between the two OR readers in a least circuit, leaving the cubic-graph count under these constraints."
 }
