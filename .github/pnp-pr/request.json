@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-5377-1",
-  "head_sha": "823b818e1d536d6f12bd46abea2b4fc9b3302723",
-  "summary": "In either permitted ownership shape, a nonstar gate owns an induced path on four vertices. The remaining exchange only needs to handle a gate with this obstruction."
+  "branch": "R-meta-3225-1",
+  "head_sha": "979ae195449ede3e83bee3fc3cfc5677db50d151",
+  "summary": "On boundary rows where the extra OR input stays true, a change of output requires the unique OR reader of wire 6 to be false on the initial row."
 }
