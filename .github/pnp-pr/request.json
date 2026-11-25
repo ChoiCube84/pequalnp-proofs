@@ -1,7 +1,7 @@
 {
   "operation": "create",
-  "branch": "R-meta-2974-2",
-  "head_sha": "d421d1d6fbf6cab7051c09d5c39438a3f535baf4",
-  "summary": "Reduces the count to a last-output-gate bound with the bound known for earlier sound outputs. Lean separately verifies that trimming later gates preserves evaluation and both single-read flags.",
-  "channel_probe": true
+  "branch": "L-meta-9774",
+  "head_sha": "fa6966060bca7d8349ad947eb8dbf1071bfdad6b",
+  "summary": "Every monotone fan-in-two AND/OR circuit for this 19-edge graph needs at least 25 gates. The proof uses symmetry and checks the remaining configurations in Lean.",
+  "local_types": true
 }
