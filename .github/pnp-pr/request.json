@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-4221-1",
-  "head_sha": "170391ce9029ee6227b96a20f5e8b76112c94be0",
-  "summary": "Proves that the desk tests give exact incidence on all rows and force the selected wires to be internal. Lean separately checks test completeness. The remaining premise is the 63-gate bound for these exact circuits."
+  "branch": "R-meta-4877-1",
+  "head_sha": "5f8fc5b5a5a456ae91a394194a2a1e6f6b33b330",
+  "summary": "Replaces the wire-by-wire derivative witnesses with two path exclusions in an exact incidence circuit. Lean separately proves the reachability recurrence. A circuit of at most 64 gates with those exclusions remains to be constructed."
 }
