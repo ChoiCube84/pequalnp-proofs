@@ -2,5 +2,6 @@
   "operation": "create",
   "branch": "R-meta-2974-2",
   "head_sha": "d421d1d6fbf6cab7051c09d5c39438a3f535baf4",
-  "summary": "Reduces the count to a last-output-gate bound with the bound known for earlier sound outputs. Lean separately verifies that trimming later gates preserves evaluation and both single-read flags."
+  "summary": "Reduces the count to a last-output-gate bound with the bound known for earlier sound outputs. Lean separately verifies that trimming later gates preserves evaluation and both single-read flags.",
+  "channel_probe": true
 }

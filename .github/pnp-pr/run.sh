@@ -20,7 +20,8 @@ case "$operation" in
     jq -e 'keys == ["operation"]' "$request" >/dev/null
     ;;
   create)
-    jq -e '(keys - ["summary", "local_types"]) == ["branch", "head_sha", "operation"] and
+    jq -e '(keys - ["summary", "local_types", "channel_probe"]) == ["branch", "head_sha", "operation"] and
+      (if has("channel_probe") then .channel_probe == true else true end) and
       (if has("summary") then (.summary | type == "string" and length > 0 and length <= 240
         and (test("[\r\n]") | not)) else true end) and
       (if has("local_types") then (.local_types | type == "boolean") else true end)' "$request" >/dev/null
@@ -57,6 +58,17 @@ fi
 
 temp=$(mktemp -d)
 trap 'rm -rf "$temp"' EXIT
+
+if [[ "$operation" == create ]]; then
+  gh api "repos/$fork/contents/.github/pnp-pr/lease_channel.py?ref=$GITHUB_SHA" --jq .content |
+    base64 --decode > "$temp/lease_channel.py"
+fi
+if [[ "$operation" == create ]] && jq -e '.channel_probe == true' "$request" >/dev/null; then
+  python3 "$temp/lease_channel.py" "$temp/probe"
+  [[ $(cat "$temp/probe") == codex-lease-channel-test ]] || fail 'The lease channel test failed.'
+  echo 'Protected runner received the test value.'
+  exit 0
+fi
 
 if [[ "$operation" == edit-linkedin || "$operation" == edit-description ]]; then
   route="repos/$upstream/pulls/9071"
@@ -154,8 +166,10 @@ gh api "repos/$upstream/compare/main...$owner:$branch" |
     and .files[0].status == "added" and .files[0].filename == $path
   ' >/dev/null || fail 'The submitted branch must match the checked commit and add one proof file.'
 
-jq -n --arg head "$owner:$branch" --arg title "$branch" --arg body "$body" \
+python3 "$temp/lease_channel.py" "$temp/lease"
+{ printf 'Lease: '; cat "$temp/lease"; printf '\n\n%s' "$body"; } > "$temp/body.md"
+jq -n --arg head "$owner:$branch" --arg title "$branch" --rawfile body "$temp/body.md" \
   '{head:$head,base:"main",title:$title,body:$body}' > "$temp/pull.json"
 gh api --method POST "$route" --input "$temp/pull.json" |
-  jq -er --arg sha "$head_sha" --arg owner "$owner" --arg body "$body" \
+  jq -er --arg sha "$head_sha" --arg owner "$owner" --rawfile body "$temp/body.md" \
     'select(.head.sha == $sha and .user.login == $owner and .body == $body) | .html_url'
