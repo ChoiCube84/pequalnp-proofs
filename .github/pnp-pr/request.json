@@ -1,6 +1,6 @@
 {
   "operation": "create",
-  "branch": "R-meta-1979-1",
-  "head_sha": "ce9449b2afe34791795bf2c74303b08c48101ec6",
-  "summary": "Reduces the negative tests to caps of size at least three paired with all their nonneighbors. Lean separately verifies that those rows cover the original tests. The 63-gate circuit remains to be constructed."
+  "branch": "R-meta-2974-2",
+  "head_sha": "d421d1d6fbf6cab7051c09d5c39438a3f535baf4",
+  "summary": "Reduces the count to a last-output-gate bound with the bound known for earlier sound outputs. Lean separately verifies that trimming later gates preserves evaluation and both single-read flags."
 }
