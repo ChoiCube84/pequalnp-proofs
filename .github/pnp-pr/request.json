@@ -1,7 +1,6 @@
 {
   "operation": "create",
-  "branch": "L-meta-9774",
-  "head_sha": "fa6966060bca7d8349ad947eb8dbf1071bfdad6b",
-  "summary": "Every monotone fan-in-two AND/OR circuit for this 19-edge graph needs at least 25 gates. The proof uses symmetry and checks the remaining configurations in Lean.",
-  "local_types": true
+  "branch": "L-meta-10004",
+  "head_sha": "35be1568608e7f5db69f66e81e2cbf678fc90e31",
+  "summary": "Every all-zero rectangle cover of the 31 by 31 incidence complement needs at least 15 rectangles. A reflection in the span of the rectangle row vectors bounds the total weight that 14 rectangles can cover."
 }
