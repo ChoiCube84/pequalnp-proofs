@@ -20,24 +20,32 @@ case "$operation" in
     jq -e 'keys == ["operation"]' "$request" >/dev/null
     ;;
   create)
-    jq -e '(keys - ["summary", "local_types", "channel_probe"]) == ["branch", "head_sha", "operation"] and
+    jq -e '(keys - ["summary", "local_types", "channel_probe", "value"]) == ["branch", "head_sha", "operation"] and
       (if has("channel_probe") then .channel_probe == true else true end) and
+      (if has("value") then (.value | type == "number" and . == floor and . >= 0 and . <= 9999) else true end) and
       (if has("summary") then (.summary | type == "string" and length > 0 and length <= 240
         and (test("[\r\n]") | not)) else true end) and
       (if has("local_types") then (.local_types | type == "boolean") else true end)' "$request" >/dev/null
     summary=$(jq -r '.summary // ""' "$request")
     local_types=$(jq -r '.local_types // false' "$request")
+    value=$(jq -r '.value // empty' "$request")
     branch=$(jq -er '.branch | strings' "$request")
     head_sha=$(jq -er '.head_sha | strings' "$request")
     [[ "$head_sha" =~ ^[0-9a-f]{40}$ ]] || fail 'Invalid proof commit SHA.'
     if [[ "$branch" =~ ^L-([a-z]+)-([0-9]+)$ ]]; then
       gap=$branch
-      proof_path="lean/PEqualNP/Outside/L_${BASH_REMATCH[1]}_${BASH_REMATCH[2]}.lean"
+      stem="${BASH_REMATCH[1]}_${BASH_REMATCH[2]}"
+      if [[ -n "$value" ]]; then
+        proof_path="lean/PEqualNP/Outside/V_${stem}__k${value}.lean"
+      else
+        proof_path="lean/PEqualNP/Outside/L_${stem}.lean"
+      fi
       reduction=false
     elif [[ "$branch" =~ ^R-([a-z]+)-([0-9]+)-([1-9][0-9]{0,2})$ ]]; then
       gap="L-${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
       proof_path="lean/PEqualNP/Outside/R_${BASH_REMATCH[1]}_${BASH_REMATCH[2]}_${BASH_REMATCH[3]}.lean"
       reduction=true
+      [[ -z "$value" ]] || fail 'A reduction has no value claim.'
     else
       fail 'Expected a project proof or reduction branch.'
     fi
@@ -155,9 +163,11 @@ curl --proto '=https' --fail --silent --show-error --max-time 20 --max-filesize 
 jq -e '.state == "leased"' "$temp/step.json" >/dev/null || fail 'The desk no longer reports an active lease.'
 curl --proto '=https' --fail --silent --show-error --max-time 20 --max-filesize 12000000 \
   https://data.pequalnp.com/data/desk/gaps.json > "$temp/gaps.json"
-jq -e --arg gap "$gap" --argjson reduction "$reduction" '
+jq -e --arg gap "$gap" --argjson reduction "$reduction" --arg value "$value" --arg path "$proof_path" '
   any(.gaps[]; .id == $gap and (.pr_open // 0) == 0
-    and ($reduction == false or .reductions == true))
+    and ($reduction == false or .reductions == true)
+    and (if $value == "" then .kind != "value"
+         else .kind == "value" and ($value | tonumber) <= .value_max and (.file_form | sub("<k>"; $value)) == $path end))
 ' "$temp/gaps.json" >/dev/null || fail 'The desk no longer reports an eligible gap without a pending PR.'
 
 gh api "repos/$upstream/compare/main...$owner:$branch" |

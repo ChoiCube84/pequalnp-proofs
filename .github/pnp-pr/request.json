@@ -1,6 +1,3 @@
 {
-  "operation": "create",
-  "branch": "L-meta-7794",
-  "head_sha": "f6947d6b1d7bc8ea90cf8dee7c081da1eaa0903b",
-  "summary": "Identify the decimal edge list with the nine-vertex Petersen minor. Apply the size-16 lower bound certified in L-meta-670 (PR #13177) to exclude every 15-gate circuit."
+  "operation": "preflight"
 }
