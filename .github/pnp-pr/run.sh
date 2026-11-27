@@ -161,7 +161,7 @@ fi
 curl --proto '=https' --fail --silent --show-error --max-time 20 --max-filesize 12000000 \
   --get https://pequalnp.com/desk/step --data-urlencode "gap=$gap" > "$temp/step.json"
 jq -e '.state == "leased"' "$temp/step.json" >/dev/null || fail 'The desk no longer reports an active lease.'
-curl --proto '=https' --fail --silent --show-error --max-time 20 --max-filesize 12000000 \
+curl --proto '=https' --fail --silent --show-error --compressed --max-time 60 \
   https://data.pequalnp.com/data/desk/gaps.json > "$temp/gaps.json"
 jq -e --arg gap "$gap" --argjson reduction "$reduction" --arg value "$value" --arg path "$proof_path" '
   any(.gaps[]; .id == $gap and (.pr_open // 0) == 0
