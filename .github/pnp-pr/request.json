@@ -1,3 +1,7 @@
 {
-  "operation": "preflight"
+  "operation": "create",
+  "branch": "L-meta-27235",
+  "head_sha": "601011ac9a2179512f1b319295c014607a0adebb",
+  "summary": "Every fan-in-two circuit for 3-by-3 perfect matching needs at least 13 gates. Applying this lower bound rules out the specified opening gates at the posted budget.",
+  "local_types": true
 }
